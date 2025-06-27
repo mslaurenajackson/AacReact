@@ -1,0 +1,101 @@
+import { useState } from 'react'
+import './App.css'
+import { Howl } from 'howler';
+
+
+const playSound = (letter) => {
+  const sound = new Howl({
+    src: [`https://api.voicerss.org/?key=YOUR_API_KEY&hl=en-us&src=${letter}`],
+    format: ['mp3'],
+  });
+  sound.play();
+};
+
+function App() {
+  const [draggedLetter, setDraggedLetter] = useState('');
+  const [communication, setCommunication] = useState([]);
+
+  // used nested arrays to immulate a keyboard layout
+ 
+  const keyboardRows = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+  ];
+
+  const handleDragStart = (letter) => {
+    setDraggedLetter(letter);
+  };
+
+  const handleDrop = () => {
+    setCommunication((prev) => [...prev, draggedLetter]);
+    setDraggedLetter('');
+  };
+
+  return (
+    <>
+      <h1>AAC Prototype-Jackson</h1>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: '0 auto',
+        }}
+      ></div>
+      <div className="keyboard">
+        {keyboardRows.map((row, rowIndex) => (
+          <div key={rowIndex} className="keyboard-row">
+            {row.map((letter) => (
+              <button
+                key={letter}
+                draggable
+                onDragStart={() => handleDragStart(letter)}
+                onClick={() => playSound(letter)}
+                style = {{
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  border: '1px solid black',
+                  backgroundColor: 'lightgray',
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {letter}
+              </button>
+            ))}
+          </div>
+        ))}
+     
+      <div
+        id="communication-area"
+        onDrop={handleDrop}
+        onDragOver={(e) => e.preventDefault()}
+        style={{
+          backgroundColor: 'white',
+          border: '2px solid #999',
+          borderRadius: '10px',
+          padding: '20px',
+          minHeight: '100px',
+          marginTop: '20px',
+          width: '100%',
+          boxSizing: 'border-box', 
+        }}
+      >
+        {communication.map((letter, index) => (
+          <span key={index} style={{ margin: '5px', fontSize: '1.5em' }}>
+            {letter}
+          </span>
+        ))}
+      </div>
+      </div>
+    </>
+  );
+}
+
+export default App;
