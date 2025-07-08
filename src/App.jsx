@@ -18,10 +18,10 @@ function App() {
   // used nested arrays to immulate a keyboard layout
  
   const keyboardRows = [
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-    ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+                      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+               ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+                    ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
   ];
 
   const handleDragStart = (letter) => {
@@ -33,67 +33,104 @@ function App() {
     setDraggedLetter('');
   };
 
+  const handleSpeak = () => {
+    const sentence = communication.join('');
+    const utterance = new SpeechSynthesisUtterance(sentence);
+    utterance.onend = () => { //clears the communication area after speaking
+      setCommunication([]);
+    };
+    speechSynthesis.speak(utterance);
+  };
+
   return (
-    <>
-      <h1>AAC Prototype-Jackson</h1>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '0 auto',
-        }}
-      ></div>
-      <div className="keyboard">
-        {keyboardRows.map((row, rowIndex) => (
-          <div key={rowIndex} className="keyboard-row">
-            {row.map((letter) => (
-              <button
-                key={letter}
-                draggable
-                onDragStart={() => handleDragStart(letter)}
-                onClick={() => playSound(letter)}
-                style = {{
-                  width: '50px',
-                  height: '50px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  border: '1px solid black',
-                  backgroundColor: 'lightgray',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                }}
-              >
-                {letter}
-              </button>
-            ))}
-          </div>
-        ))}
-     
-      <div
-        id="communication-area"
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-        style={{
-          backgroundColor: 'white',
-          border: '2px solid #999',
-          borderRadius: '10px',
-          padding: '20px',
-          minHeight: '100px',
-          marginTop: '20px',
-          width: '100%',
-          boxSizing: 'border-box', 
-        }}
-      >
-        {communication.map((letter, index) => (
-          <span key={index} style={{ margin: '5px', fontSize: '1.5em' }}>
-            {letter}
-          </span>
-        ))}
-      </div>
-      </div>
+      <>
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      minHeight: '100vh',
+      padding: '20px',
+      backgroundColor: '#f5f5f5',
+    }}
+  >
+    <h1 style={{ textAlign: 'center' }}>AAC Prototype - Jackson</h1>
+
+    <div className="keyboard">
+      {keyboardRows.map((row, rowIndex) => (
+        <div key={rowIndex} className="keyboard-row">
+          {row.map((letter) => (
+            <button
+              key={letter}
+              draggable
+              onDragStart={() => handleDragStart(letter)}
+              onClick={() => {
+                playSound(letter);
+                setCommunication((prev) => [...prev, letter]);
+              }}
+              style={{
+                width: '50px',
+                height: '50px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                border: '1px solid black',
+                backgroundColor: 'lightgray',
+                fontSize: '20px',
+                fontWeight: 'bold',
+              }}
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+
+    <div
+      id="communication-area"
+      onDrop={handleDrop}
+      onDragOver={(e) => e.preventDefault()}
+      style={{
+        backgroundColor: 'white',
+        border: '2px solid #999',
+        borderRadius: '10px',
+        padding: '20px',
+        minHeight: '100px',
+        marginTop: '20px',
+        width: '80%',
+        maxWidth: '800px',
+        boxSizing: 'border-box',
+        textAlign: 'center',
+        color: '#000',
+        fontWeight: 'bold'
+      }}
+    >
+      {communication.map((letter, index) => (
+        <span key={index} style={{ margin: '5px', fontSize: '1.5em' }}>
+          {letter}
+        </span>
+      ))}
+    </div>
+
+    <button
+      onClick={handleSpeak}
+      style={{
+        marginTop: '20px',
+        padding: '10px 20px',
+        fontSize: '16px',
+        backgroundColor: '#007BFF',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+      }}
+    >
+      Speak
+    </button>
+  </div>
+
     </>
   );
 }
