@@ -86,7 +86,7 @@ function App() {
                     justifyContent: "center",
                     alignItems: "center",
                     border: "1px solid black",
-                    backgroundColor: "lightgray",
+                    backgroundColor: "darkgray",
                     fontSize: "20px",
                     fontWeight: "bold",
                   }}
