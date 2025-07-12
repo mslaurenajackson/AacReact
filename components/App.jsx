@@ -33,7 +33,7 @@ function App() {
 
   return (
     <>
-      <h1>AAC Prototype-Jackson</h1>
+      <h1>AAC Board</h1>
       <div className="keyboard">
         {keyboardRows.map((row, rowIndex) => (
           <div key={rowIndex} className="keyboard-row">
@@ -72,6 +72,9 @@ function App() {
             {letter}
           </span>
         ))}
+         <footer className="watermark">
+  © {new Date().getFullYear()} Lauren A. Jackson M.S. CCC-SLP | AAC Prototype
+</footer>
       </div>
     </>
   );

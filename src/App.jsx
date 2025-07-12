@@ -65,7 +65,7 @@ function App() {
           backgroundColor: "#f5f5f5",
         }}
       >
-        <h1 style={{ textAlign: "center" }}>AAC Prototype - Jackson</h1>
+        <h1 style={{ textAlign: "center" }}>AAC Board</h1>
 
         <div className="keyboard">
           {keyboardRows.map((row, rowIndex) => (
@@ -89,6 +89,9 @@ function App() {
                     backgroundColor: "darkgray",
                     fontSize: "20px",
                     fontWeight: "bold",
+                    textShadowColor: 'black', //Outline color
+                    textShadowOffset: { width: 2, height: 2 },
+                    textShadowRadius: 1, //Outline radius
                   }}
                 >
                   {letter}
@@ -171,6 +174,9 @@ function App() {
         >
           Delete
         </button>
+        <footer className="watermark">
+  © {new Date().getFullYear()} Lauren A. Jackson M.S. CCC-SLP | AAC Prototype
+</footer>
       </div>
     </>
   );
